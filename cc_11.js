@@ -80,3 +80,30 @@ class Borrower {
     library.addBook(book1);
     library.listBooks();
     // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+
+    //Task 4 - Implemented Book Borrowing
+
+    //Add a method lendBook(borrowerId, isbn) in the Library class:
+    //// Function searches for the book via the ISBN
+    const book = this.books.find(book => book.isbn === isbn); 
+    // Function searches for borrower via ID
+        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId); 
+        if (book && borrower) {
+        //Checks if the book exists and has available copies. Reduces the book’s copies by 1.
+        if (book.copies > 0) {
+            book.updateCopies(-1); 
+            borrower.borrowBook(book);
+            } 
+            else {
+                console.log("Not available");
+            }
+        } else {
+            console.log("Please check information. Borrower or Book does not exist")
+        }
+        
+     //Test Data
+    library.lendBook(201, 123456);
+console.log(book1.getDetails());
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
+console.log(borrower1.borrowedBooks);
+// Expected output: ["The Great Gatsby"]
