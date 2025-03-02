@@ -73,37 +73,57 @@ class Borrower {
     listBooks() { 
         this.books.map(book => console.log(book.getDetails()));
     }
-    };
-
-    //Test Data
-    const library = new Library();
-    library.addBook(book1);
-    library.listBooks();
-    // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+    
 
     //Task 4 - Implemented Book Borrowing
-
-    //Add a method lendBook(borrowerId, isbn) in the Library class:
-    //// Function searches for the book via the ISBN
-    const book = this.books.find(book => book.isbn === isbn); 
-    // Function searches for borrower via ID
-        const borrower = this.borrowers.find(borrower => borrower.borrowerId === borrowerId); 
-        if (book && borrower) {
-        //Checks if the book exists and has available copies. Reduces the book’s copies by 1.
-        if (book.copies > 0) {
+    lendBook(borrowerId, isbn) { 
+        let book = this.books.find((bk) => bk.isbn === isbn); 
+        let borrower = this.borrowers.find((br) => br.borrowerId === borrowerId); //Finding borrower by borrowerId using .find()
+        if (!book) { 
+            console.log(`Book not found via ISBN`); 
+            return;
+        } if (!borrower) { 
+            console.log(`Borrower Information not found.`); 
+            return;
+        } if (book.copies > 0) { 
             book.updateCopies(-1); 
-            borrower.borrowBook(book);
-            } 
-            else {
-                console.log("Not available");
-            }
-        } else {
-            console.log("Please check information. Borrower or Book does not exist")
+             } else { 
+            console.log(`Book does not exist`) 
+        };
+    };
+    //Task 5 - Implemented Book Returns
+    returnBook(borrowerId, isbn) { //Add a method returnBook(borrowerId, ISBN)
+        let book = this.books.find((book) => book.isbn === isbn); 
+        let borrower = this.borrowers.find((br) => br.borrowerId === borrowerId); 
+        if (!book) { 
+            console.log(`Book does not exist.`); 
+            return;
+                } else {
+            book.updateCopies(1); 
+            borrower.returnBook(book); 
+            
         }
-        
-     //Test Data
-    library.lendBook(201, 123456);
+    }
+};
+
+
+//Test Data
+const library = new Library(); 
+library.borrowers.push(borrower1); 
+library.addBook(book1); 
+library.listBooks(); 
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+
+//Test Data
+library.lendBook(201, 123456);
 console.log(book1.getDetails());
 // Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 3"
 console.log(borrower1.borrowedBooks);
 // Expected output: ["The Great Gatsby"]
+
+//Test Data
+library.returnBook(201, 123456);
+console.log(book1.getDetails());
+// Expected output: "Title: The Great Gatsby, Author: F. Scott Fitzgerald, ISBN: 123456, Copies: 4"
+console.log(borrower1.borrowedBooks);
+// Expected output: []
